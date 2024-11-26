@@ -23,6 +23,6 @@ public class CriarLivrosController {
   public ResponseEntity<LivroResponse> criarLivro(
       @RequestBody @Valid CriarLivroRequest criarLivroRequest) {
     Livro livro = criarLivro.execute(criarLivroRequest);
-    return ResponseEntity.ok(new LivroResponse(livro));
+    return ResponseEntity.ok(LivroResponse.of(livro));
   }
 }
