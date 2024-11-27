@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class Livro {
   private String titulo;
 
   @NotNull
+  @Positive
   @Digits(integer = 3, fraction = 2)
   private BigDecimal preco;
 
@@ -36,9 +38,9 @@ public class Livro {
     this.id = id;
   }
 
-  public Livro(String titulo,
-      BigDecimal preco,
-      String isbn) {
+  public Livro(@NotBlank String titulo,
+      @NotNull @Positive @Digits(integer = 3, fraction = 2) BigDecimal preco,
+      @NotBlank String isbn) {
     this.titulo = titulo;
     this.preco = preco;
     this.isbn = isbn;
