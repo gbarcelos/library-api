@@ -8,8 +8,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
-import org.hibernate.validator.constraints.ISBN;
-import org.hibernate.validator.constraints.ISBN.Type;
 
 public record CriarLivroRequest(
 
@@ -22,7 +20,6 @@ public record CriarLivroRequest(
     BigDecimal preco,
 
     @NotBlank
-    @ISBN(type = Type.ISBN_10)
     @UniqueValue(domainClass = Livro.class, fieldName = "isbn")
     String isbn
 ) implements LivroInput {
