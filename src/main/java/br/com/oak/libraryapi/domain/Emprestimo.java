@@ -10,7 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 public class Emprestimo {
@@ -29,12 +32,12 @@ public class Emprestimo {
   @JoinColumn(name = "exemplar_id", nullable = false)
   private Exemplar exemplar;
 
-  private LocalDate dataEmprestimo;
+  private LocalDateTime dataEmprestimo;
 
   @Positive
   private Integer prazoEntregaEmDias;
 
-  private LocalDate dataEntrega;
+  private LocalDateTime dataEntrega;
 
   @Deprecated
   public Emprestimo() {
@@ -43,12 +46,20 @@ public class Emprestimo {
   public Emprestimo(Usuario usuario, Exemplar exemplar, Integer prazoEntregaEmDias) {
     this.usuario = usuario;
     this.exemplar = exemplar;
-    this.dataEmprestimo = LocalDate.now();
+    this.dataEmprestimo = LocalDateTime.now();
     this.prazoEntregaEmDias = prazoEntregaEmDias;
   }
 
   public boolean foiEntregue() {
     return nonNull(dataEntrega);
+  }
+
+  public boolean expirado(Clock clock) {
+    var dataEmprestimoZonedDateTime = dataEmprestimo.atZone(ZoneId.systemDefault());
+    var dataDevolucao = LocalDate
+        .ofInstant(dataEmprestimoZonedDateTime.toInstant(), clock.getZone()).plusDays(prazoEntregaEmDias);
+
+    return dataDevolucao.isBefore(LocalDate.now(clock));
   }
 
   public Long getId() {
@@ -63,7 +74,7 @@ public class Emprestimo {
     return usuario;
   }
 
-  public LocalDate getDataEmprestimo() {
+  public LocalDateTime getDataEmprestimo() {
     return dataEmprestimo;
   }
 
@@ -71,7 +82,7 @@ public class Emprestimo {
     return prazoEntregaEmDias;
   }
 
-  public LocalDate getDataEntrega() {
+  public LocalDateTime getDataEntrega() {
     return dataEntrega;
   }
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class Usuario {
 
   public boolean prazoEntregaValidoParaUsuario(Integer prazoEntregaEmDias){
     return tipoUsuario.permiteTempoEmprestimo(prazoEntregaEmDias);
+  }
+
+  public boolean possuiEmprestimosExpirado(Clock clock) {
+    return this.emprestimos.stream().anyMatch(
+        emprestimo -> emprestimo.expirado(clock)); //1
   }
 
   public Long getId() {

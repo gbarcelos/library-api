@@ -19,7 +19,8 @@ public class CriarEmprestimosController {
   private final CriarEmprestimoValidator criarEmprestimoValidator; //1
   private final CriarEmprestimo criarEmprestimo; //1
 
-  public CriarEmprestimosController(CriarEmprestimoValidator criarEmprestimoValidator, CriarEmprestimo criarEmprestimo) {
+  public CriarEmprestimosController(CriarEmprestimoValidator criarEmprestimoValidator,
+      CriarEmprestimo criarEmprestimo) {
     this.criarEmprestimoValidator = criarEmprestimoValidator;
     this.criarEmprestimo = criarEmprestimo;
   }

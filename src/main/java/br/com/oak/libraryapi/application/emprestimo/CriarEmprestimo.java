@@ -52,7 +52,7 @@ public class CriarEmprestimo {
     var tempoEmprestimoEmDias  = Optional.ofNullable(input.prazoEntregaEmDias()).orElse(
         MAXIMO_TEMPO_EMPRESTIMO_EM_DIAS);
 
-    var emprestimo = exemplar.criarEmprestimo(usuario, tempoEmprestimoEmDias);
-    return emprestimoRepository.save(emprestimo);
+    return emprestimoRepository.save(exemplar
+        .criarEmprestimo(usuario, tempoEmprestimoEmDias));
   }
 }
