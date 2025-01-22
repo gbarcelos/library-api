@@ -50,16 +50,28 @@ public class Emprestimo {
     this.prazoEntregaEmDias = prazoEntregaEmDias;
   }
 
-  public boolean foiEntregue() {
-    return nonNull(dataEntrega);
-  }
-
   public boolean expirado(Clock clock) {
     var dataEmprestimoZonedDateTime = dataEmprestimo.atZone(ZoneId.systemDefault());
     var dataDevolucao = LocalDate
         .ofInstant(dataEmprestimoZonedDateTime.toInstant(), clock.getZone()).plusDays(prazoEntregaEmDias);
 
     return dataDevolucao.isBefore(LocalDate.now(clock));
+  }
+
+  public boolean foiEntregue() {
+    return nonNull(dataEntrega);
+  }
+
+  public boolean emprestimoPertenceAoUsuario(Usuario usuario) {
+    return this.usuario.equals(usuario);
+  }
+
+  public boolean podeSerDevolvido(Usuario usuario) {
+    return !foiEntregue() && emprestimoPertenceAoUsuario(usuario);
+  }
+
+  public void devolver() {
+    this.dataEntrega = LocalDateTime.now();
   }
 
   public Long getId() {
